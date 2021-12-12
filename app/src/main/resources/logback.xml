@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="SQLROLLINGFILE">
+        <File>/tmp/sql.log</File>
+        <rollingPolicy>
+            <FileNamePattern>logFile.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <layout>
+            <Pattern>%-4date | %msg %n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.hibernate.SQL" additivity="false" >
+        <level value="DEBUG" />
+        <appender-ref ref="SQLROLLINGFILE" />
+    </logger>
+
+    <logger name="org.hibernate.type" additivity="false" >
+        <level value="TRACE" />
+        <appender-ref ref="SQLROLLINGFILE" />
+    </logger>
+</configuration>
