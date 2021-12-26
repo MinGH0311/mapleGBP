@@ -10,7 +10,7 @@ import javax.persistence.*
 )
 class Guild(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     val gid: Int = 0,
 
@@ -24,10 +24,10 @@ class Guild(
     val world: World = World.NONE,
 
     @Column
-    val createdAt: LocalDateTime = LocalDateTime.MIN,
+    var createdAt: LocalDateTime? = null,
 
     @Column
-    val updatedAt: LocalDateTime = LocalDateTime.MIN
+    var updatedAt: LocalDateTime? = null
 ) {
     override fun toString(): String {
         return "Guild(guildName='$guildName', world=$world, createdAt=$createdAt, updatedAt=$updatedAt)"
@@ -41,8 +41,6 @@ class Guild(
 
         if (guildName != other.guildName) return false
         if (world != other.world) return false
-        if (createdAt != other.createdAt) return false
-        if (updatedAt != other.updatedAt) return false
 
         return true
     }
@@ -50,8 +48,6 @@ class Guild(
     override fun hashCode(): Int {
         var result = guildName.hashCode()
         result = 31 * result + world.hashCode()
-        result = 31 * result + createdAt.hashCode()
-        result = 31 * result + updatedAt.hashCode()
         return result
     }
 }

@@ -41,10 +41,10 @@ class User(
     val extras: String = "",
 
     @Column
-    val createdAt: LocalDateTime = LocalDateTime.MIN,
+    var createdAt: LocalDateTime? = null,
 
     @Column
-    val updatedAt: LocalDateTime = LocalDateTime.MIN
+    var updatedAt: LocalDateTime? = null
 ) {
     override fun toString(): String {
         return "User(uid=$uid, guild=$guild, image='$image', nickname='$nickname', union=$union, `class`='$`class`', mureong=$mureong, level=$level, world=$world, extras='$extras', createdAt=$createdAt, updatedAt=$updatedAt)"
@@ -56,7 +56,6 @@ class User(
 
         other as User
 
-        if (uid != other.uid) return false
         if (guild != other.guild) return false
         if (image != other.image) return false
         if (nickname != other.nickname) return false
@@ -66,15 +65,12 @@ class User(
         if (level != other.level) return false
         if (world != other.world) return false
         if (extras != other.extras) return false
-        if (createdAt != other.createdAt) return false
-        if (updatedAt != other.updatedAt) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = uid
-        result = 31 * result + (guild?.hashCode() ?: 0)
+        var result = guild?.hashCode() ?: 0
         result = 31 * result + image.hashCode()
         result = 31 * result + nickname.hashCode()
         result = 31 * result + union
@@ -83,8 +79,7 @@ class User(
         result = 31 * result + level
         result = 31 * result + world.hashCode()
         result = 31 * result + extras.hashCode()
-        result = 31 * result + createdAt.hashCode()
-        result = 31 * result + updatedAt.hashCode()
+
         return result
     }
 

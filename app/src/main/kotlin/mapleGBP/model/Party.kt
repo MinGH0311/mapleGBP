@@ -4,9 +4,11 @@ import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
+@Table(uniqueConstraints = [UniqueConstraint(name = "party_name", columnNames = ["partyName"])],
+        indexes = [Index(name = "party_name_idx", columnList = "partyName", unique = true)])
 class Party(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     val pid: Int = 0,
 
@@ -14,10 +16,10 @@ class Party(
     val partyName: String = "",
 
     @Column
-    val createdAt: LocalDateTime = LocalDateTime.MIN,
+    var createdAt: LocalDateTime? = null,
 
     @Column
-    val updatedAt: LocalDateTime = LocalDateTime.MIN
+    var updatedAt: LocalDateTime? = null
 ) {
     override fun toString(): String {
         return "Party(pid=$pid, partyName='$partyName', createdAt=$createdAt, updatedAt=$updatedAt)"
@@ -29,7 +31,6 @@ class Party(
 
         other as Party
 
-        if (pid != other.pid) return false
         if (partyName != other.partyName) return false
         if (createdAt != other.createdAt) return false
         if (updatedAt != other.updatedAt) return false
@@ -38,12 +39,9 @@ class Party(
     }
 
     override fun hashCode(): Int {
-        var result = pid
-        result = 31 * result + partyName.hashCode()
+        var result = partyName.hashCode()
         result = 31 * result + createdAt.hashCode()
         result = 31 * result + updatedAt.hashCode()
         return result
     }
-
-
 }
