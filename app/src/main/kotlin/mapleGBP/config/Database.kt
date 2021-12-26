@@ -68,7 +68,7 @@ open class Database {
         return properties
     }
 
-    private fun additionalJdbcProperties(): Properties {
+    protected fun additionalJdbcProperties(): Properties {
         val jdbcProperties: Properties = Properties()
         jdbcProperties.setProperty("characterEncoding", "UTF-8")
 
