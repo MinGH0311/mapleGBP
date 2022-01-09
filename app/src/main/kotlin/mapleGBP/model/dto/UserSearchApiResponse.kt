@@ -1,6 +1,8 @@
 package mapleGBP.model.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import mapleGBP.model.World
+import java.lang.RuntimeException
 
 data class UserSearchApiResponse (
     @JsonProperty("character_image")
@@ -123,4 +125,18 @@ data class UserSearchApiResponse (
         @JsonProperty("timestamp")
         val timestamp: String
     )
+
+    fun toUserInfo(): UserInfo {
+        return UserInfo(
+            nickname = nickname ?: throw RuntimeException("User nickname should not be null"),
+            image = characterImage ?: throw RuntimeException("Character image should not be null"),
+            guild = guildName ?: "",
+            union = unionInfo ?. level ?: 0,
+            `class` = classes ?: throw RuntimeException("User class should not be null"),
+            mureong = doJangInfo ?. stage ?: 0,
+            level = level ?: throw RuntimeException("User level should not be null"),
+            world = world ?. let { World.from(world) } ?: throw RuntimeException("World should not be null"),
+            extras = ""
+        )
+    }
 }

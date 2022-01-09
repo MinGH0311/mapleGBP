@@ -1,6 +1,7 @@
 package mapleGBP.model
 
 import mapleGBP.model.converter.WorldConverter
+import mapleGBP.model.dto.UserInfo
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -46,6 +47,20 @@ class User(
     @Column
     var updatedAt: LocalDateTime? = null
 ) {
+    fun toUserInfo(): UserInfo {
+        return UserInfo(
+            nickname = nickname,
+            image = image,
+            guild = guild ?. guildName ?: "",
+            union = union,
+            `class` = `class`,
+            mureong = mureong,
+            level = level,
+            world = world,
+            extras = extras
+        )
+    }
+
     override fun toString(): String {
         return "User(uid=$uid, guild=$guild, image='$image', nickname='$nickname', union=$union, `class`='$`class`', mureong=$mureong, level=$level, world=$world, extras='$extras', createdAt=$createdAt, updatedAt=$updatedAt)"
     }
