@@ -1,6 +1,11 @@
 package mapleGBP.model
 
-enum class World(val worldName: String) {
+import com.fasterxml.jackson.annotation.JsonValue
+
+enum class World(
+    @JsonValue
+    val worldName: String
+) {
     LUNA("luna"),
     SCANIA("scania"),
     ELYSIUM("elysium"),

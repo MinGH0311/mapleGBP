@@ -1,6 +1,6 @@
 package mapleGBP.dao.party
 
-import mapleGBP.TestDatabase
+import mapleGBP.TestConfiguration
 import mapleGBP.dao.repository.PartyRepository
 import mapleGBP.model.Party
 import org.junit.jupiter.api.Test
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import javax.persistence.EntityNotFoundException
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [TestDatabase::class])
+@ContextConfiguration(classes = [TestConfiguration::class])
 internal class PartyDaoJpaTest {
 
     @Autowired

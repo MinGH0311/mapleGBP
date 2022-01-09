@@ -1,10 +1,10 @@
 package mapleGBP
 
-import mapleGBP.config.Database
+import mapleGBP.config.Configuration
 import org.springframework.jdbc.datasource.DriverManagerDataSource
 import javax.sql.DataSource
 
-class TestDatabase: Database() {
+class TestConfiguration: Configuration() {
 
     override fun datasource(): DataSource {
         val dataSource: DriverManagerDataSource = DriverManagerDataSource()
