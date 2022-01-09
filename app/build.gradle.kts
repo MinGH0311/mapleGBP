@@ -26,6 +26,15 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
     implementation("org.springframework.data:spring-data-jpa:2.6.0")
 
+    // https://mvnrepository.com/artifact/org.springframework/spring-webflux
+    implementation("org.springframework:spring-webflux:5.3.13")
+
+    // https://mvnrepository.com/artifact/io.projectreactor.netty/reactor-netty
+    implementation("io.projectreactor.netty:reactor-netty:1.0.14")
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.module/jackson-module-kotlin
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
+
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
     implementation("org.hibernate:hibernate-core:5.6.1.Final")
 

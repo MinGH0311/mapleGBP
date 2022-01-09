@@ -1,6 +1,6 @@
 package mapleGBP.dao.user
 
-import mapleGBP.TestDatabase
+import mapleGBP.TestConfiguration
 import mapleGBP.dao.repository.GuildRepository
 import mapleGBP.dao.repository.UserRepository
 import mapleGBP.model.Guild
@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import javax.persistence.EntityNotFoundException
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [TestDatabase::class])
+@ContextConfiguration(classes = [TestConfiguration::class])
 internal class UserDaoJpaTest {
     val testGuild: Guild = Guild(0, emptyList(), "Test-Guild", World.SCANIA)
 
