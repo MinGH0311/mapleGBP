@@ -1,5 +1,6 @@
 package mapleGBP.model
 
+import mapleGBP.model.dto.PartyInfo
 import java.time.LocalDateTime
 import javax.persistence.*
 
