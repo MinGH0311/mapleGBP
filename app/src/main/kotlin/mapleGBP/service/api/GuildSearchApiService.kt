@@ -12,12 +12,12 @@ import reactor.core.publisher.Mono
 import java.lang.RuntimeException
 
 @Service
-class GuildSearchApiService {
+open class GuildSearchApiService {
 
     @Value("\${api.guild.searchUrl}")
     lateinit var guildSearchUrl: String
 
-    fun getGuildInfo(guildName: String, world: World): GuildSearchApiResponse {
+    open fun getGuildInfo(guildName: String, world: World): GuildSearchApiResponse {
         val client: WebClient = WebClient.create(guildSearchUrl.format(world.worldName, guildName))
 
         return client.get()

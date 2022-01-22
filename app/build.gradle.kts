@@ -63,6 +63,9 @@ dependencies {
     // https://mvnrepository.com/artifact/io.kotest/kotest-runner-junit5-jvm
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.0.0")
 
+    // https://mvnrepository.com/artifact/org.mockito.kotlin/mockito-kotlin
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
     // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-reflect
     runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
 
