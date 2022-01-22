@@ -13,7 +13,7 @@ import java.lang.RuntimeException
 import javax.persistence.EntityNotFoundException
 
 @Service
-class UserService(
+open class UserService(
     var userDao: UserDao,
     var guildDao: GuildDao,
     var userSearchApiService: UserSearchApiService
@@ -24,7 +24,7 @@ class UserService(
         return userDao.getUser(nickname).toUserInfo()
     }
 
-    fun searchUserInfo(nickname: String): UserInfo {
+    open fun searchUserInfo(nickname: String): UserInfo {
         return userSearchApiService.getUserInfo(nickname).toUserInfo()
     }
 

@@ -26,4 +26,19 @@ data class GuildSearchApiResponse(
         @JsonProperty("level")
         val level: Int
     )
+
+    fun toGuildInfo(): GuildInfo {
+        return GuildInfo(
+            name = name,
+            world = world,
+            members = member.map {
+                    member: GuildMember -> GuildInfo.GuildMember(
+                        nickname = member.nickname,
+                        image = member.characterImage,
+                        `class` = member.classes,
+                        level = member.level
+                    )
+            }
+        )
+    }
 }

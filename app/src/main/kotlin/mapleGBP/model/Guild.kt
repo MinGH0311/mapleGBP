@@ -1,6 +1,7 @@
 package mapleGBP.model
 
 import mapleGBP.model.converter.WorldConverter
+import mapleGBP.model.dto.GuildInfo
 import java.time.LocalDateTime
 import javax.persistence.*
 
@@ -29,6 +30,21 @@ class Guild(
     @Column
     var updatedAt: LocalDateTime? = null
 ) {
+    fun toGuildInfo(): GuildInfo {
+        return GuildInfo(
+            name = guildName,
+            world = world,
+            members = users.map {
+                    user: User -> GuildInfo.GuildMember(
+                        nickname = user.nickname,
+                        image = user.image,
+                        `class` = user.`class`,
+                        level = user.level
+                    )
+            }
+        )
+    }
+
     override fun toString(): String {
         return "Guild(guildName='$guildName', world=$world, createdAt=$createdAt, updatedAt=$updatedAt)"
     }
