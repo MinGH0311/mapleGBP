@@ -1,5 +1,6 @@
 package mapleGBP.config
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
@@ -18,10 +19,19 @@ import javax.sql.DataSource
 
 @Configuration
 @EnableJpaRepositories(basePackages = ["mapleGBP.dao"])
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:\${phase}-application.properties")
 @EnableTransactionManagement
 @ComponentScan(basePackages = ["mapleGBP"], )
 open class Configuration {
+
+    @Value("\${database.url}")
+    lateinit var databaseUrl: String
+
+    @Value("\${database.user}")
+    lateinit var databaseUser: String
+
+    @Value("\${database.password}")
+    lateinit var databasePassword: String
 
     @Bean
     open fun entityManagerFactory(): LocalContainerEntityManagerFactoryBean {
