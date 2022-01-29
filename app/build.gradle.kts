@@ -12,6 +12,8 @@ plugins {
 
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+
+    id("war")
 }
 
 repositories {
@@ -40,6 +42,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation("mysql:mysql-connector-java:8.0.27")
+
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    compileOnly("javax.servlet:javax.servlet-api:4.0.1")
 
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
@@ -74,4 +79,8 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass.set("mapleGBP.AppKt")
+}
+
+tasks.war {
+    webAppDirectory.set(file("src/main/webapp"))
 }

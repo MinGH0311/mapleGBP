@@ -16,6 +16,10 @@ class PartyService(
     var partyMemberDao: PartyMemberDao,
     var userDao: UserDao
 ) {
+    fun getAllPartyInfo(): List<PartyInfo> {
+        return partyDao.getAllParties().map { party: Party -> getPartyInfo(party.partyName) }
+    }
+
     fun getPartyInfo(partyName: String): PartyInfo {
         val party: Party = partyDao.getParty(partyName)
         val partyMembers: List<User> = partyMemberDao.getPartyMembersWithParty(party).map { partyMember: PartyMember ->

@@ -15,6 +15,10 @@ class GuildService(
     var userService: UserService,
     var guildSearchApiService: GuildSearchApiService
 ) {
+    fun getAllGuildInfo(): List<GuildInfo> {
+        return guildDao.getAllGuilds().map { guild: Guild -> guild.toGuildInfo() }
+    }
+
     fun getGuildInfo(guildName: String, world: World): GuildInfo {
         return guildDao.getGuild(guildName, world).toGuildInfo()
     }

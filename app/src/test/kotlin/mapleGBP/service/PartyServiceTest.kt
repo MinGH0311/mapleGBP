@@ -57,6 +57,31 @@ internal class PartyServiceTest {
     }
 
     @Test
+    fun getAllPartyInfo() {
+        val testParties: List<PartyInfo> = listOf(
+            PartyInfo("test-party1", testUsers.subList(0, 4).map { user: User -> PartyInfo.PartyMember(user.nickname, user.image, user.`class`, user.level) }),
+            PartyInfo("test-party2", testUsers.subList(0, 2).map { user: User -> PartyInfo.PartyMember(user.nickname, user.image, user.`class`, user.level) }),
+            PartyInfo("test-party3", testUsers.subList(1, 3).map { user: User -> PartyInfo.PartyMember(user.nickname, user.image, user.`class`, user.level) }),
+            PartyInfo("test-party4", testUsers.subList(2, 4).map { user: User -> PartyInfo.PartyMember(user.nickname, user.image, user.`class`, user.level) }),
+        )
+
+        userRepository.saveAll(testUsers)
+        testParties.forEach { partyInfo: PartyInfo -> partyService.savePartyInfo(partyInfo) }
+
+        partyService.getAllPartyInfo().let { parties: List<PartyInfo> ->
+            assertEquals(parties.count(), 4)
+            assertIterableEquals(parties, testParties)
+        }
+    }
+
+    @Test
+    fun getAllPartyInfo_emptyParty() {
+        partyService.getAllPartyInfo().let { parties: List<PartyInfo> ->
+            assertEquals(parties.count(), 0)
+        }
+    }
+
+    @Test
     fun getPartyInfo() {
         val testParty: PartyInfo = PartyInfo("test-party1",
             testUsers.subList(0, 2).map { user: User -> PartyInfo.PartyMember(user.nickname, user.image, user.`class`, user.level) }

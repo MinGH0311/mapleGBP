@@ -1,9 +1,11 @@
 package mapleGBP.config
 
+import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
+import org.springframework.core.env.Environment
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.jdbc.datasource.DriverManagerDataSource
@@ -17,11 +19,25 @@ import java.util.*
 import javax.sql.DataSource
 
 @Configuration
+@PropertySource("classpath:\${phase:alpha}-application.properties")
 @EnableJpaRepositories(basePackages = ["mapleGBP.dao"])
-@PropertySource("classpath:application.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = ["mapleGBP"], )
-open class Configuration {
+open class Configuration: InitializingBean {
+
+    lateinit var databaseUrl: String
+
+    lateinit var databaseUser: String
+
+    lateinit var databasePassword: String
+
+    @Autowired
+    lateinit var environment: Environment
+
+    override fun afterPropertiesSet() {
+        databaseUrl = environment.getProperty("database.url") ?: "jdbc:mysql://ec2-13-124-101-93.ap-northeast-2.compute.amazonaws.com:3306/alpha_gbp"
+        databaseUser = environment.getProperty("database.user") ?: "mgbp"
+        databasePassword = environment.getProperty("database.password") ?: "KMS-SERVICE-ADMIN-2021"
+    }
 
     @Bean
     open fun entityManagerFactory(): LocalContainerEntityManagerFactoryBean {
@@ -40,9 +56,9 @@ open class Configuration {
     open fun datasource(): DataSource {
         val dataSource: DriverManagerDataSource = DriverManagerDataSource()
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver")
-        dataSource.url = "jdbc:mysql://ec2-13-124-101-93.ap-northeast-2.compute.amazonaws.com:3306/gbp"
-        dataSource.username = "mgbp"
-        dataSource.password = "KMS-SERVICE-ADMIN-2021"
+        dataSource.url = databaseUrl
+        dataSource.username = databaseUser
+        dataSource.password = databasePassword
         dataSource.connectionProperties = additionalJdbcProperties()
 
         return dataSource

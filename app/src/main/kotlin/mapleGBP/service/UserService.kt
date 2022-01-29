@@ -20,6 +20,10 @@ open class UserService(
 ) {
     val logger: Logger = LoggerFactory.getLogger(UserService::class.java)
 
+    fun getAllUserInfo(): List<UserInfo> {
+        return userDao.getAllUsers().map { user: User -> user.toUserInfo() }
+    }
+
     fun getUserInfo(nickname: String): UserInfo {
         return userDao.getUser(nickname).toUserInfo()
     }
