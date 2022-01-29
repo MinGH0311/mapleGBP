@@ -29,6 +29,7 @@ import kotlin.test.assertContains
 @ContextConfiguration(classes = [TestConfiguration::class])
 internal class GuildServiceTest {
     val testGuild: Guild = Guild(0, emptyList(), "Test-Guild", World.SCANIA)
+    val testGuild2: Guild = Guild(1, emptyList(), "Test-Guild2", World.SCANIA)
 
     val testUsers: List<User> = listOf(
         User(1, testGuild, "https://google.com", "test1", 100, "히어로", 30, 200, World.SCANIA),
@@ -62,6 +63,17 @@ internal class GuildServiceTest {
     fun testDB() {
         assertEquals(userRepository.count(), 0L, "Check DB Connection is connected to test DB")
         assertEquals(guildRepository.count(), 0L, "Check DB Connection is connected to test DB")
+    }
+
+    @Test
+    fun getAllGuildInfo() {
+        guildRepository.save(testGuild)
+        guildRepository.save(testGuild2)
+
+        guildService.getAllGuildInfo().let { guilds: List<GuildInfo> ->
+            assertEquals(guilds.size, 2)
+            assertIterableEquals(guilds, listOf(testGuild.toGuildInfo(), testGuild2.toGuildInfo()))
+        }
     }
 
     @Test

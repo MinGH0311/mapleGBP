@@ -39,7 +39,7 @@ class User(
     val world: World = World.NONE,
 
     @Column
-    val extras: String = "",
+    val extras: String? = "",
 
     @Column
     var createdAt: LocalDateTime? = null,
@@ -57,7 +57,7 @@ class User(
             mureong = mureong,
             level = level,
             world = world,
-            extras = extras
+            extras = extras ?: ""
         )
     }
 

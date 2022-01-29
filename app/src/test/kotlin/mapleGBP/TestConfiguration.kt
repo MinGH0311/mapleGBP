@@ -1,9 +1,16 @@
 package mapleGBP
 
 import mapleGBP.config.Configuration
+import mapleGBP.config.WebConfiguration
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
 import org.springframework.jdbc.datasource.DriverManagerDataSource
 import javax.sql.DataSource
 
+@ComponentScan(
+    basePackages = ["mapleGBP"],
+    excludeFilters = [ComponentScan.Filter(WebConfiguration::class, type = FilterType.ASSIGNABLE_TYPE)]
+)
 class TestConfiguration: Configuration() {
 
     override fun datasource(): DataSource {

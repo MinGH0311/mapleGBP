@@ -1,5 +1,6 @@
 package mapleGBP.service.api
 
+import mapleGBP.TestConfiguration
 import mapleGBP.config.Configuration
 import mapleGBP.model.dto.UserSearchApiResponse
 import org.junit.jupiter.api.Test
@@ -14,7 +15,7 @@ import java.lang.RuntimeException
 import kotlin.test.assertContains
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [Configuration::class])
+@ContextConfiguration(classes = [TestConfiguration::class])
 internal class UserSearchApiServiceTest {
 
     @Autowired

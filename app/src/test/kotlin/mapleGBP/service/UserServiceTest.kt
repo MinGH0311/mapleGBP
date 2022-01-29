@@ -23,7 +23,8 @@ import javax.persistence.EntityNotFoundException
 internal class UserServiceTest {
     val testGuild: Guild = Guild(0, emptyList(), "Test-Guild", World.SCANIA)
 
-    val testUser: User = User(1, testGuild, "https://google.com", "test1", 100, "히어로", 30, 200, World.SCANIA)
+    val testUser1: User = User(1, testGuild, "https://google.com", "test1", 100, "히어로", 30, 200, World.SCANIA)
+    val testUser2: User = User(2, testGuild, "https://google.com", "test2", 1000, "히어로", 50, 250, World.SCANIA)
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -47,11 +48,23 @@ internal class UserServiceTest {
     }
 
     @Test
+    fun getAllUserInfo() {
+        guildRepository.save(testGuild)
+        userRepository.save(testUser1)
+        userRepository.save(testUser2)
+
+        userService.getAllUserInfo().let { userInfos: List<UserInfo> ->
+            assertEquals(userInfos.count(), 2)
+            assertIterableEquals(userInfos, listOf(testUser1.toUserInfo(), testUser2.toUserInfo()))
+        }
+    }
+
+    @Test
     fun getUserInfo() {
         guildRepository.save(testGuild)
-        userRepository.save(testUser)
+        userRepository.save(testUser1)
 
-        val userInfo: UserInfo = userService.getUserInfo(testUser.nickname)
+        val userInfo: UserInfo = userService.getUserInfo(testUser1.nickname)
 
         checkNull(userInfo)
         assertEquals(userInfo.nickname, "test1")
@@ -61,7 +74,7 @@ internal class UserServiceTest {
 
     @Test
     fun getUserInfo_notExistUser() {
-        assertThrows(EntityNotFoundException::class.java) { userService.getUserInfo(testUser.nickname) }
+        assertThrows(EntityNotFoundException::class.java) { userService.getUserInfo(testUser1.nickname) }
     }
 
     @Test
@@ -84,29 +97,29 @@ internal class UserServiceTest {
     fun saveOrUpdateUserInfo_saveNewUser() {
         guildRepository.save(testGuild)
 
-        val savedUserInfo: UserInfo = userService.saveOrUpdateUserInfo(testUser.toUserInfo())
+        val savedUserInfo: UserInfo = userService.saveOrUpdateUserInfo(testUser1.toUserInfo())
 
         checkNull(savedUserInfo)
-        assertEquals(savedUserInfo, testUser.toUserInfo())
+        assertEquals(savedUserInfo, testUser1.toUserInfo())
     }
 
     @Test
     fun saveOrUpdateUserInfo_updateUser() {
         guildRepository.save(testGuild)
-        userRepository.save(testUser)
+        userRepository.save(testUser1)
 
         val updateTestUser: User = User(
-            guild = testUser.guild,
-            image = testUser.image,
-            nickname = testUser.nickname,
-            union = testUser.union + 500,
-            `class` = testUser.`class`,
-            mureong = testUser.mureong + 3,
-            level = testUser.level + 30,
-            world = testUser.world,
-            extras = testUser.extras,
-            createdAt = testUser.createdAt,
-            updatedAt = testUser.updatedAt
+            guild = testUser1.guild,
+            image = testUser1.image,
+            nickname = testUser1.nickname,
+            union = testUser1.union + 500,
+            `class` = testUser1.`class`,
+            mureong = testUser1.mureong + 3,
+            level = testUser1.level + 30,
+            world = testUser1.world,
+            extras = testUser1.extras,
+            createdAt = testUser1.createdAt,
+            updatedAt = testUser1.updatedAt
         )
         val updatedUserInfo: UserInfo = userService.saveOrUpdateUserInfo(updateTestUser.toUserInfo())
 
@@ -116,14 +129,14 @@ internal class UserServiceTest {
         val userInfo: UserInfo = userService.getUserInfo(updateTestUser.nickname)
 
         checkNull(userInfo)
-        assertEquals(userInfo.union - testUser.union, 500)
-        assertEquals(userInfo.mureong - testUser.mureong, 3)
-        assertEquals(userInfo.level - testUser.level, 30)
+        assertEquals(userInfo.union - testUser1.union, 500)
+        assertEquals(userInfo.mureong - testUser1.mureong, 3)
+        assertEquals(userInfo.level - testUser1.level, 30)
     }
 
     @Test
     fun saveOrUpdateUserInfo_invalidGuild() {
-        val savedUserInfo: UserInfo = userService.saveOrUpdateUserInfo(testUser.toUserInfo())
+        val savedUserInfo: UserInfo = userService.saveOrUpdateUserInfo(testUser1.toUserInfo())
 
         checkNull(savedUserInfo)
         assertEquals(savedUserInfo.guild, "")
@@ -133,16 +146,16 @@ internal class UserServiceTest {
     fun deleteUserInfo() {
         guildRepository.save(testGuild)
 
-        userService.saveOrUpdateUserInfo(testUser.toUserInfo())
-        assertDoesNotThrow({ userService.getUserInfo(testUser.nickname) })
+        userService.saveOrUpdateUserInfo(testUser1.toUserInfo())
+        assertDoesNotThrow({ userService.getUserInfo(testUser1.nickname) })
 
-        userService.deleteUserInfo(testUser.nickname)
-        assertThrows(EntityNotFoundException::class.java) { userService.getUserInfo(testUser.nickname) }
+        userService.deleteUserInfo(testUser1.nickname)
+        assertThrows(EntityNotFoundException::class.java) { userService.getUserInfo(testUser1.nickname) }
     }
 
     @Test
     fun deleteUserInfo_notExistUser() {
-        assertThrows(EntityNotFoundException::class.java) { userService.deleteUserInfo(testUser.nickname) }
+        assertThrows(EntityNotFoundException::class.java) { userService.deleteUserInfo(testUser1.nickname) }
     }
 
     private fun checkNull(userInfo: UserInfo) {

@@ -1,5 +1,6 @@
 package mapleGBP.service.api
 
+import mapleGBP.TestConfiguration
 import mapleGBP.config.Configuration
 import mapleGBP.model.World
 import mapleGBP.model.dto.GuildSearchApiResponse
@@ -15,7 +16,7 @@ import java.lang.RuntimeException
 import kotlin.test.assertContains
 
 @ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [Configuration::class])
+@ContextConfiguration(classes = [TestConfiguration::class])
 internal class GuildSearchApiServiceTest {
 
     @Autowired
