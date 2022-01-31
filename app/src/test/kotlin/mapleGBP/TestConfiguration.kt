@@ -1,6 +1,7 @@
 package mapleGBP
 
 import mapleGBP.config.Configuration
+import mapleGBP.config.SwaggerConfiguration
 import mapleGBP.config.WebConfiguration
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.FilterType
@@ -9,7 +10,7 @@ import javax.sql.DataSource
 
 @ComponentScan(
     basePackages = ["mapleGBP"],
-    excludeFilters = [ComponentScan.Filter(WebConfiguration::class, type = FilterType.ASSIGNABLE_TYPE)]
+    excludeFilters = [ComponentScan.Filter(classes = [WebConfiguration::class, SwaggerConfiguration::class], type = FilterType.ASSIGNABLE_TYPE)]
 )
 class TestConfiguration: Configuration() {
 

@@ -13,7 +13,7 @@ class User(
     @Column
     val uid: Int = 0,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gid", foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
     val guild: Guild? = null,
 
@@ -62,7 +62,7 @@ class User(
     }
 
     override fun toString(): String {
-        return "User(uid=$uid, guild=$guild, image='$image', nickname='$nickname', union=$union, `class`='$`class`', mureong=$mureong, level=$level, world=$world, extras='$extras', createdAt=$createdAt, updatedAt=$updatedAt)"
+        return "User(uid=$uid, image='$image', nickname='$nickname', union=$union, `class`='$`class`', mureong=$mureong, level=$level, world=$world, extras='$extras', createdAt=$createdAt, updatedAt=$updatedAt)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -71,7 +71,6 @@ class User(
 
         other as User
 
-        if (guild != other.guild) return false
         if (image != other.image) return false
         if (nickname != other.nickname) return false
         if (union != other.union) return false
@@ -85,8 +84,7 @@ class User(
     }
 
     override fun hashCode(): Int {
-        var result = guild?.hashCode() ?: 0
-        result = 31 * result + image.hashCode()
+        var result = image.hashCode() ?: 0
         result = 31 * result + nickname.hashCode()
         result = 31 * result + union
         result = 31 * result + `class`.hashCode()
