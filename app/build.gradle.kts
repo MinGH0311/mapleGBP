@@ -43,6 +43,12 @@ dependencies {
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation("mysql:mysql-connector-java:8.0.27")
 
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+    implementation("io.springfox:springfox-swagger2:2.9.2")
+
+    // https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+    implementation("io.springfox:springfox-swagger-ui:2.9.2")
+
     // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
     compileOnly("javax.servlet:javax.servlet-api:4.0.1")
 
