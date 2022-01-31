@@ -19,8 +19,10 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.spy
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationContext
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.test.util.AopTestUtils
 import java.lang.RuntimeException
 import javax.persistence.EntityNotFoundException
 import kotlin.test.assertContains
@@ -52,6 +54,9 @@ internal class GuildServiceTest {
 
     @Autowired
     lateinit var guildSearchApiService: GuildSearchApiService
+
+    @Autowired
+    lateinit var applicationContext: ApplicationContext
 
     @BeforeEach
     fun clearDB() {
@@ -117,8 +122,8 @@ internal class GuildServiceTest {
 
         val spyUserService: UserService = spy(userService)
         val spyGuildSearchApiService: GuildSearchApiService = spy(guildSearchApiService)
-        guildService.userService = spyUserService
-        guildService.guildSearchApiService = spyGuildSearchApiService
+        AopTestUtils.getTargetObject<GuildService>(guildService).userService = spyUserService
+        AopTestUtils.getTargetObject<GuildService>(guildService).guildSearchApiService = spyGuildSearchApiService
 
         val mockGuildSearchApiResponse: GuildSearchApiResponse = GuildSearchApiResponse(
             testGuild.guildName,

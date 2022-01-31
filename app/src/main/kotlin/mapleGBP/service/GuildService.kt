@@ -8,26 +8,29 @@ import mapleGBP.model.dto.GuildInfo
 import mapleGBP.model.dto.UserInfo
 import mapleGBP.service.api.GuildSearchApiService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class GuildService(
+open class GuildService(
     var guildDao: GuildDao,
     var userService: UserService,
     var guildSearchApiService: GuildSearchApiService
 ) {
-    fun getAllGuildInfo(): List<GuildInfo> {
+    @Transactional
+    open fun getAllGuildInfo(): List<GuildInfo> {
         return guildDao.getAllGuilds().map { guild: Guild -> guild.toGuildInfo() }
     }
 
-    fun getGuildInfo(guildName: String, world: World): GuildInfo {
+    @Transactional
+    open fun getGuildInfo(guildName: String, world: World): GuildInfo {
         return guildDao.getGuild(guildName, world).toGuildInfo()
     }
 
-    fun searchGuildInfo(guildName: String, world: World): GuildInfo {
+    open fun searchGuildInfo(guildName: String, world: World): GuildInfo {
         return guildSearchApiService.getGuildInfo(guildName, world).toGuildInfo()
     }
 
-    fun saveGuildInfo(guildInfo: GuildInfo): GuildInfo {
+    open fun saveGuildInfo(guildInfo: GuildInfo): GuildInfo {
         val newGuild: Guild = Guild(
             guildName = guildInfo.name,
             world = guildInfo.world
@@ -36,7 +39,8 @@ class GuildService(
         return guildDao.addGuild(newGuild).toGuildInfo()
     }
 
-    fun saveOrUpdateAllGuildMember(guildInfo: GuildInfo): GuildInfo {
+    @Transactional
+    open fun saveOrUpdateAllGuildMember(guildInfo: GuildInfo): GuildInfo {
         getGuildInfo(guildInfo.name, guildInfo.world)
         val searchedGuildInfo: GuildInfo = searchGuildInfo(guildInfo.name, guildInfo.world)
 
@@ -60,12 +64,13 @@ class GuildService(
         )
     }
 
-    fun deleteGuildInfo(guildName: String, world: World): GuildInfo {
+    open fun deleteGuildInfo(guildName: String, world: World): GuildInfo {
         guildDao.deleteGuild(guildName, world)
         return GuildInfo(guildName, world, emptyList())
     }
 
-    fun deleteGuildInfoWithMember(guildName: String, world: World): GuildInfo {
+    @Transactional
+    open fun deleteGuildInfoWithMember(guildName: String, world: World): GuildInfo {
         val guild: Guild = guildDao.getGuild(guildName, world)
 
         val deletedGuildMember: List<GuildInfo.GuildMember> = guild.users.map { user: User ->

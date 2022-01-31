@@ -15,7 +15,7 @@ class Guild(
     @Column
     val gid: Int = 0,
 
-    @OneToMany(mappedBy = "guild", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "guild", fetch = FetchType.LAZY)
     val users: List<User> = listOf(),
 
     @Column
