@@ -1,5 +1,6 @@
 package mapleGBP.config
 
+import com.zaxxer.hikari.HikariDataSource
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.jdbc.datasource.DriverManagerDataSource
 import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.JpaVendorAdapter
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
@@ -54,12 +54,17 @@ open class Configuration: InitializingBean {
 
     @Bean
     open fun datasource(): DataSource {
-        val dataSource: DriverManagerDataSource = DriverManagerDataSource()
+        val dataSource: HikariDataSource = HikariDataSource()
+        dataSource.jdbcUrl = databaseUrl
+        dataSource.maximumPoolSize = 50
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver")
-        dataSource.url = databaseUrl
         dataSource.username = databaseUser
         dataSource.password = databasePassword
-        dataSource.connectionProperties = additionalJdbcProperties()
+        additionalProperties()
+            .filter { it.key != null && it.value != null }
+            .forEach{
+                dataSource.addDataSourceProperty(it.key as String?, it.value)
+            }
 
         return dataSource
     }
